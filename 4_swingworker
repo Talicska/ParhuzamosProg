@@ -143,7 +143,10 @@ public class myJFrame extends javax.swing.JFrame {
                         sum += A[i][k]*B[k][j];
                     }
                     C[i][j]=sum;                    
-                }                
+                }     
+                if ((i%10)==0){
+                    publish(i/10 );
+                }
             }
         }
             
