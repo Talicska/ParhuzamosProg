@@ -1,0 +1,151 @@
+#include <stdio.h>
+#include <time.h>
+
+void mult()
+{
+    int m, n, p, q, c, d, k, sum = 0;
+    int max =400;
+    int act= 400;
+    int first[max][max], second[max][max], multiply[max][max];
+
+    //printf("Enter the number of rows and columns of first matrix\n");
+    //scanf("%d%d", &m, &n);
+    //printf("Enter the elements of first matrix\n");
+    m=act;
+    n=act;
+
+    for (c = 0; c < m; c++)
+        for (d = 0; d < n; d++)
+            //scanf("%d", &first[c][d]);
+            first[c][d] = rand() % 100;
+
+    //printf("Enter the number of rows and columns of second matrix\n");
+    //scanf("%d%d", &p, &q);
+    p=act;
+    q=act;
+
+    if (n != p)
+        printf("Matrices with entered orders can't be multiplied with each other.\n");
+    else
+    {
+        //printf("Enter the elements of second matrix\n");
+
+        for (c = 0; c < p; c++)
+            for (d = 0; d < q; d++)
+                //scanf("%d", &second[c][d]);
+                second[c][d] = rand() % 100;
+
+        //multiplication
+        clock_t start = clock();
+
+
+#pragma omp parallel for default(none) private(c,d,k,sum) shared(first,second,multiply,m,q,p)
+        for (c = 0; c < m; c++)
+        {
+            for (d = 0; d < q; d++)
+            {
+                for (k = 0; k < p; k++)
+                {
+                    sum = sum + first[c][k]*second[k][d];
+                }
+
+                multiply[c][d] = sum;
+                sum = 0;
+            }
+        }
+
+        clock_t end = clock();
+float seconds = (float)(end - start) / CLOCKS_PER_SEC;
+printf("%f\n", seconds);
+
+        /*printf("Product of entered matrices:\n");
+
+        for (c = 0; c < m; c++)
+        {
+            for (d = 0; d < q; d++)
+                printf("%d\t", multiply[c][d]);
+
+            printf("\n");
+        }*/
+    }
+}
+
+void mult2()
+{
+    int m, n, p, q, c, d, k, sum = 0;
+    int max =400;
+    int act= 400;
+    int first[max][max], second[max][max], multiply[max][max];
+
+    //printf("Enter the number of rows and columns of first matrix\n");
+    //scanf("%d%d", &m, &n);
+    //printf("Enter the elements of first matrix\n");
+    m=act;
+    n=act;
+
+    for (c = 0; c < m; c++)
+        for (d = 0; d < n; d++)
+            //scanf("%d", &first[c][d]);
+            first[c][d] = rand() % 100;
+
+    //printf("Enter the number of rows and columns of second matrix\n");
+    //scanf("%d%d", &p, &q);
+    p=act;
+    q=act;
+
+    if (n != p)
+        printf("Matrices with entered orders can't be multiplied with each other.\n");
+    else
+    {
+        //printf("Enter the elements of second matrix\n");
+
+        for (c = 0; c < p; c++)
+            for (d = 0; d < q; d++)
+                //scanf("%d", &second[c][d]);
+                second[c][d] = rand() % 100;
+
+        //multiplication
+        clock_t start = clock();
+
+
+//#pragma omp parallel for default(none) private(c,d,k,sum) shared(first,second,multiply,m,q,p)
+        for (c = 0; c < m; c++)
+        {
+            for (d = 0; d < q; d++)
+            {
+                for (k = 0; k < p; k++)
+                {
+                    sum = sum + first[c][k]*second[k][d];
+                }
+
+                multiply[c][d] = sum;
+                sum = 0;
+            }
+        }
+
+        clock_t end = clock();
+float seconds = (float)(end - start) / CLOCKS_PER_SEC;
+printf("%f\n", seconds);
+
+        /*printf("Product of entered matrices:\n");
+
+        for (c = 0; c < m; c++)
+        {
+            for (d = 0; d < q; d++)
+                printf("%d\t", multiply[c][d]);
+
+            printf("\n");
+        }*/
+    }
+}
+
+int main()
+{
+
+    srand(time(NULL));
+
+mult();         //parallel
+mult2();
+
+    return 0;
+}
